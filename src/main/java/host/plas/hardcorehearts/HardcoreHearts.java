@@ -1,17 +1,19 @@
-package host.plas.exampleproject;
+package host.plas.hardcorehearts;
 
 import host.plas.bou.BetterPlugin;
-import host.plas.exampleproject.config.DatabaseConfig;
-import host.plas.exampleproject.config.MainConfig;
-import host.plas.exampleproject.events.BouListener;
-import host.plas.exampleproject.events.BukkitListener;
+import host.plas.hardcorehearts.config.DatabaseConfig;
+import host.plas.hardcorehearts.config.MainConfig;
+import host.plas.hardcorehearts.events.BouListener;
+import host.plas.hardcorehearts.events.BukkitListener;
+import host.plas.hardcorehearts.sql.HHDB;
+import host.plas.hardcorehearts.timers.ReviveCheckTimer;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public final class ExampleProject extends BetterPlugin {
+public final class HardcoreHearts extends BetterPlugin {
     @Getter @Setter
-    private static ExampleProject instance;
+    private static HardcoreHearts instance;
     @Getter @Setter
     private static MainConfig mainConfig;
     @Getter @Setter
@@ -22,7 +24,13 @@ public final class ExampleProject extends BetterPlugin {
     @Getter @Setter
     private static BouListener bouListener;
 
-    public ExampleProject() {
+    @Getter @Setter
+    private static HHDB database;
+
+    @Getter @Setter
+    private static ReviveCheckTimer reviveCheckTimer;
+
+    public HardcoreHearts() {
         super();
     }
 
@@ -36,6 +44,10 @@ public final class ExampleProject extends BetterPlugin {
 
         setBukkitListener(new BukkitListener());
         setBouListener(new BouListener());
+
+        setDatabase(new HHDB());
+
+        setReviveCheckTimer(new ReviveCheckTimer());
     }
 
     @Override
