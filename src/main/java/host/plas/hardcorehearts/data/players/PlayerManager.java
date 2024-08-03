@@ -9,22 +9,22 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 public class PlayerManager {
     @Getter @Setter
-    private static ConcurrentSkipListSet<HHPlayer> players = new ConcurrentSkipListSet<>();
+    private static ConcurrentSkipListSet<HHPlayer> loadedPlayers = new ConcurrentSkipListSet<>();
 
     public static void loadPlayer(HHPlayer player) {
         if (hasPlayer(player.getIdentifier())) {
             unloadPlayer(player.getIdentifier());
         }
 
-        players.add(player);
+        loadedPlayers.add(player);
     }
 
     public static void unloadPlayer(String identifier) {
-        players.removeIf(p -> p.getIdentifier().equals(identifier));
+        loadedPlayers.removeIf(p -> p.getIdentifier().equals(identifier));
     }
 
     public static Optional<HHPlayer> getPlayer(String identifier) {
-        return players.stream().filter(p -> p.getIdentifier().equals(identifier)).findFirst();
+        return loadedPlayers.stream().filter(p -> p.getIdentifier().equals(identifier)).findFirst();
     }
 
     public static boolean hasPlayer(String identifier) {

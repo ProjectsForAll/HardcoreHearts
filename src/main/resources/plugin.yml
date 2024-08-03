@@ -2,3 +2,39 @@ name: '${name}'
 version: '${version}'
 main: '${main}'
 folia-supported: true
+depend:
+  - BukkitOfUtils
+  - PlaceholderAPI
+api-version: 1.15
+
+commands:
+  hhrecreate:
+    description: Recreate a player.
+    permission: hardcorehearts.command.recreate
+    aliases:
+      - hhre
+  hhsetlives:
+    description: Sets the lives count of a player.
+    permission: hardcorehearts.command.setlives
+    aliases:
+      - hhsl
+  hhsetdeaths:
+    description: Sets the deaths count of a player.
+    permission: hardcorehearts.command.setdeaths
+    aliases:
+      - hhsd
+  hhsetkills:
+    description: Sets the kills count of a player.
+    permission: hardcorehearts.command.setkills
+    aliases:
+      - hhsk
+  hhsetrevives:
+    description: Sets the revives count of a player.
+    permission: hardcorehearts.command.setrevives
+    aliases:
+      - hhsr
+  hhsetdeathbanned:
+    description: Sets the death banned status of a player.
+    permission: hardcorehearts.command.setdeathbanned
+    aliases:
+      - hhsdb

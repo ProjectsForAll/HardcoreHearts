@@ -38,6 +38,8 @@ public class HHDB extends DBOperator {
 
     public CompletableFuture<Optional<HHPlayer>> loadPlayerAsync(String uuid) {
         return CompletableFuture.supplyAsync(() -> {
+            ensureUsable();
+
             String s1 = Statements.getStatement(HHDB.getInstance(), Statements.Centralized.SELECT);
 
             AtomicReference<Optional<HHPlayer>> player = new AtomicReference<>(Optional.empty());
@@ -55,7 +57,7 @@ public class HHDB extends DBOperator {
                         int deaths = rs.getInt("Deaths");
                         int kills = rs.getInt("Kills");
                         int revives = rs.getInt("Revives");
-                        boolean isDeathBanned = rs.getBoolean("IsDeathBanned");
+                        boolean isDeathBanned = rs.getInt("IsDeathBanned") == 1;
 
                         HHPlayer hhPlayer = new HHPlayer(uuid);
                         hhPlayer.setLives(lives);
@@ -76,7 +78,13 @@ public class HHDB extends DBOperator {
     }
 
     public CompletableFuture<Boolean> savePlayerAsync(HHPlayer player) {
+        if (player.isSaving()) return CompletableFuture.completedFuture(false);
+
+        player.setSaving(true);
+
         return CompletableFuture.supplyAsync(() -> {
+            ensureUsable();
+
             String s1 = Statements.getStatement(HHDB.getInstance(), Statements.Centralized.UPDATE);
 
             execute(s1, stmt -> {
@@ -86,20 +94,21 @@ public class HHDB extends DBOperator {
                     stmt.setInt(3, player.getDeaths());
                     stmt.setInt(4, player.getKills());
                     stmt.setInt(5, player.getRevives());
-                    stmt.setBoolean(6, player.isDeathBanned());
+                    stmt.setInt(6, player.isDeathBanned() ? 1 : 0);
 
                     if (getType() == DatabaseType.MYSQL) {
                         stmt.setInt(7, player.getLives());
                         stmt.setInt(8, player.getDeaths());
                         stmt.setInt(9, player.getKills());
                         stmt.setInt(10, player.getRevives());
-                        stmt.setBoolean(11, player.isDeathBanned());
+                        stmt.setInt(11, player.isDeathBanned() ? 1 : 0);
                     }
                 } catch (SQLException e) {
                     HardcoreHearts.getInstance().logSevereWithInfo("Failed to save player: " + player.getIdentifier(), e);
                 }
             });
 
+            player.setSaving(false);
             return true;
         });
     }
@@ -118,6 +127,8 @@ public class HHDB extends DBOperator {
 
     public CompletableFuture<Boolean> deletePlayerAsync(String uuid) {
         return CompletableFuture.supplyAsync(() -> {
+            ensureUsable();
+
             String s1 = Statements.getStatement(HHDB.getInstance(), Statements.Centralized.DELETE);
 
             execute(s1, stmt -> {

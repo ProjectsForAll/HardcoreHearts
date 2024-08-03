@@ -12,19 +12,21 @@ import java.util.List;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class ReviveCraft extends HHCraft {
+    public static final String IDENTIFIER = "revive";
+
     public ReviveCraft(CraftingConfig config) {
         super(config);
     }
 
     public static void populateFirst() {
-        String version = HardcoreHearts.getMainConfig().getResource().getString("crafts.revive.version");
-        if (version != null && version.equals("1.0")) {
-            return;
+        String version = HardcoreHearts.getMainConfig().getResource().getString("crafts." + IDENTIFIER + ".version");
+        if (! (version != null && version.equals("1.0"))) {
+            getDefaultConfig().save(HardcoreHearts.getMainConfig().getResource().getSection("crafts." + IDENTIFIER));
+
+            HardcoreHearts.getMainConfig().write("crafts." + IDENTIFIER + ".version", "1.0");
         }
 
-        getDefaultConfig().save(HardcoreHearts.getMainConfig().getResource().getSection("crafts" + "." + "revive"));
-
-        HardcoreHearts.getMainConfig().write("crafts.revive.version", "1.0");
+        CraftingManager.loadCraft(new ReviveCraft(getDefaultConfig()));
     }
 
     public static CraftingConfig getDefaultConfig() {

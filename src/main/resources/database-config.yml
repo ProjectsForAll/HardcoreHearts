@@ -1,0 +1,9 @@
+database:
+  password: password
+  database: hardcorehearts
+  sqlite-file-name: hardcorehearts.db
+  port: 3306
+  table-prefix: hh_
+  host: localhost
+  type: SQLITE
+  username: root

@@ -14,7 +14,7 @@ public class Statements {
                 + "`Deaths` INT NOT NULL, "
                 + "`Kills` INT NOT NULL, "
                 + "`Revives` INT NOT NULL, "
-                + "`IsDeathBanned` BOOLEAN NOT NULL, "
+                + "`IsDeathBanned` BIT NOT NULL DEFAULT 0, "
                 + "PRIMARY KEY (`Uuid`));"),
         UPDATE("INSERT INTO `%table_prefix%users` (`Uuid`, `Name`, `Lives`, `Deaths`, `Kills`, `Revives`, `IsDeathBanned`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?) " +
@@ -60,7 +60,7 @@ public class Statements {
                 + "`Deaths` INT NOT NULL, "
                 + "`Kills` INT NOT NULL, "
                 + "`Revives` INT NOT NULL, "
-                + "`IsDeathBanned` BOOLEAN NOT NULL, "
+                + "`IsDeathBanned` BIT NOT NULL DEFAULT 0, "
                 + "PRIMARY KEY (`Uuid`));"),
         UPDATE("INSERT OR REPLACE INTO `%table_prefix%users` (`Uuid`, `Name`, `Lives`, `Deaths`, `Kills`, `Revives`, `IsDeathBanned`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?);"),
